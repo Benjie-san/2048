@@ -7,6 +7,9 @@ let is2048Exist = false;
 let is4096Exist = false;
 let is8192Exist = false;
 
+let startX = 0;
+let startY = 0;
+
 
 function setGame(){
 
@@ -65,19 +68,18 @@ function handleSlide(e){
    if(["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "KeyW","KeyA","KeyS","KeyD"].includes(e.code)){
       e.preventDefault();
       
-      if (e.code == "ArrowLeft" || e.code == "KeyA" ) {
+      if (e.code == "ArrowLeft" && canMoveLeft()) {
          slideLeft();
          setTwo();
-      } else if (e.code == "ArrowRight" || e.code == "KeyD") {
-         setTwo();
+      } else if (e.code == "ArrowRight" && canMoveRight()) {
          slideRight();
-      } else if (e.code == "ArrowUp" || e.code == "KeyW") {
          setTwo();
+      } else if (e.code == "ArrowUp" && canMoveUp()) {
          slideUp();
-      } else if (e.code == "ArrowDown" || e.code == "KeyS") {
+         setTwo();
+      } else if (e.code == "ArrowDown" && canMoveDown() ) {
          slideDown();
          setTwo();
-
       }
    }
 
@@ -131,7 +133,7 @@ function slideLeft(){
          updateTile(tile, num);
          
          if (originalRow[c] !== num && num !== 0) { 
-            tile.style.animation = "slide-from-right 0.3s";
+            tile.style.animation = "slide-from-right 0.2s";
             setTimeout(() => {
                tile.style.animation = "";
             }, 300);
@@ -155,7 +157,7 @@ function slideRight(){
          updateTile(tile, num);
 
          if (originalRow[c] !== num && num !== 0) { 
-            tile.style.animation = "slide-from-left 0.3s";
+            tile.style.animation = "slide-from-left 0.2s";
             setTimeout(() => {
                tile.style.animation = "";
             }, 300);
@@ -191,7 +193,7 @@ function slideUp(){
          updateTile(tile, num);
 
          if (changedIndices.includes(r) && num !== 0) {
-            tile.style.animation = "slide-from-down 0.3s";
+            tile.style.animation = "slide-from-down 0.2s";
             setTimeout(() => {
                tile.style.animation = "";
             }, 300);
@@ -229,7 +231,7 @@ function slideDown(){
          updateTile(tile, num);
 
          if (changedIndices.includes(r) && num !== 0) {
-            tile.style.animation = "slide-from-up 0.3s";
+            tile.style.animation = "slide-from-up 0.2s";
             setTimeout(() => {
                tile.style.animation = "";
             }, 300);
@@ -272,11 +274,72 @@ function setTwo(){
          board[r][c] = 2;
          let tile = document.getElementById(r.toString() + "-" + c.toString());
          tile.innerText = "2";
-         tile.classList.add("x2")
+         tile.classList.add("x2");
+         tile.style.animation = "pulse 0.3s linear 1";
+            setTimeout(() => {
+               tile.style.animation = "";
+            }, 300);
 
          found = true;
       }
    }
+}
+
+function canMoveLeft() {
+   for (let r = 0; r < rows; r++) {
+      for (let c = 1; c < columns; c++) {
+         console.log(`${r} - ${c}`);
+         if (board[r][c] !== 0) {
+            if (board[r][c - 1] === 0 || board[r][c - 1] === board[r][c]) {
+                  return true;
+            }
+         }
+      }
+   }
+   return false;
+}
+
+function canMoveRight() {
+   for (let r = 0; r < rows; r++) {
+      for (let c = columns - 2; c >= 0; c--) {
+         console.log(`${r} - ${c}`);
+         if (board[r][c] !== 0) {
+            if (board[r][c + 1] === 0 || board[r][c + 1] === board[r][c]) {
+                  return true;
+            }
+         }
+      }
+}
+   return false;
+}
+
+function canMoveUp() {
+   for (let c = 0; c < columns; c++) {
+      for (let r = 1; r < rows; r++) {
+         console.log(`${c} - ${r}`);
+         if (board[r][c] !== 0) {
+            if (board[r - 1][c] === 0 || board[r - 1][c] === board[r][c]) {
+                  return true;
+            }
+         }
+      }
+   }
+   return false;
+}
+
+function canMoveDown() {
+   for (let c = 0; c < columns; c++) {
+
+      for (let r = rows - 2; r >= 0; r--) {
+         console.log(`${c} - ${r}`);
+         if (board[r][c] !== 0) {
+            if (board[r + 1][c] === 0 || board[r + 1][c] === board[r][c]) {
+                  return true;
+            }
+         }
+      }
+   }
+   return false;
 }
 
 function checkWin(){
@@ -329,3 +392,75 @@ function restartGame(){
    setTwo();
 
 }
+
+
+// for mobile view, for swipping upon playing
+document.addEventListener("touchstart", (e) =>{
+   startX = e.touches[0].clientX;
+   startY = e.touches[0].clientY;
+});
+
+document.addEventListener("touchmove", (e)=>{
+   if(!e.target.className.includes("tile")){
+      return
+   }
+   e.preventDefault();
+
+}, { passive:false });
+
+document.addEventListener('touchend', (e)=>{
+   if(!e.target.className.includes("tile")){
+      return
+   }
+   let diffX = startX - e.changedTouches[0].clientX;
+   let diffY = startY - e.changedTouches[0].clientY;
+
+   if(Math.abs(diffX) > Math.abs(diffY) ){
+      if(diffX > 0){
+         if(canMoveLeft()){
+            slideLeft();
+            setTwo();
+         }
+         
+      }else{
+         if(canMoveRight()){
+            slideRight();
+            setTwo();
+         }
+         
+      }
+      
+   }
+   else if((Math.abs(diffX) && Math.abs(diffY)) == 0){
+      return
+   }
+   else{
+      if(diffY > 0){
+         if(canMoveUp()){
+            slideUp();
+            setTwo();
+         }
+         
+      }else{
+         if(canMoveDown()){
+            slideDown();
+            setTwo();
+         }
+         
+      }
+   }
+
+   document.getElementById("score").innerText = score;
+
+   checkWin();
+
+   if(hasLost()){
+      setTimeout(() => {
+         alert("Game Over! Game will Restart");
+         alert("Click any arrow to restart");
+         restartGame();
+      }, 100)
+   }
+
+});
+
