@@ -234,8 +234,8 @@ hr{
 }
 
 @keyframes pulse{
-   25%  {transform: scale(0.9);}
-   75%  {transform: scale(1.1);}
+   25%  {transform: scale(0.7);}
+   75%  {transform: scale(1);}
 }
 
 @media (max-width: 415px){
