@@ -226,7 +226,7 @@ hr{
    75%  {transform: scale(1);}
 }
 
-@media (max-width: 300px){
+@media (max-width: 415px){
    
    #board{
       margin-top: 8px;
