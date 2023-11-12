@@ -74,10 +74,9 @@ hr{
 #board{
    width: 400px;
    height: 400px;
-   background-color: #effaff;
-   border: 6px solid #b7dff2;
+   background-color: #faf8ef;
+   border: 6px solid #bbada0;
    margin: 0 auto;
-
    display:flex;
    flex-wrap: wrap;
 }
@@ -87,7 +86,7 @@ hr{
    display: inline-block;
    width: 90px;
    height: 90px;
-   border: 5px solid #b7dff2;
+   border: 5px solid #bbada0;
    font-size: 40px;
    font-weight: bold;
    display:flex;
@@ -99,48 +98,42 @@ hr{
 
 .x2 {
    background-color: #eee4da;
-   color: rgba(0,0,0,0);
    background-image: var(--background-image-url-02);
    background-size: 100% 100%;
 }
 .x4 {
-   background-color: #ece0ca;
-   color: rgba(0,0,0,0);
+   background-color: #eee1c9;
+
    background-image: var(--background-image-url-04);
    background-size: 100% 100%;
 }
 
 .x8 {
    background-color: #f4b17a;
-   color: rgba(0,0,0,0);
    background-image: var(--background-image-url-08);
    background-size: 100% 100%;
 }
 
 .x16 {
    background-color: #f59575;
-   color: rgba(0,0,0,0);
    background-image: var(--background-image-url-16);
    background-size: 100% 100%;
 }
 
 .x32 {
    background-color: #f57c5f;
-   color: rgba(0,0,0,0);
    background-image: var(--background-image-url-32);
    background-size: 100% 100%;
 }
 
 .x64 {
    background-color: #f65d3b;
-   color: rgba(0,0,0,0);
    background-image: var(--background-image-url-64);
    background-size: 100% 100%;
 }
 
 .x128 {
    background-color: #edce71;
-   color: rgba(0,0,0,0);
    background-image: var(--background-image-url-128);
    background-size: 100% 100%;
 }
@@ -154,35 +147,30 @@ hr{
 
 .x512 {
    background-color: #edc651;
-   color: rgba(0,0,0,0);
    background-image: var(--background-image-url-512);
    background-size: 100% 100%;
 }
 
 .x1024 {
    background-color: #eec744;
-   color: rgba(0,0,0,0);
    background-image: var(--background-image-url-1024);
    background-size: 100% 100%;
 }
 
 .x2048 {
    background-color: #f59575;
-   color: rgba(0,0,0,0);
    background-image: var(--background-image-url-2048);
    background-size: 100% 100%;
 }
 
 .x4096 {
    background-color: #fe3d3d;
-   color: rgba(0,0,0,0);
    background-image: var(--background-image-url-4096);
    background-size: 100% 100%;
 }
 
 .x8192 {
    background-color: #ff2020;
-   color: rgba(0,0,0,0);
    background-image: var(--background-image-url-8192);
    background-size: 100% 100%;
 }
@@ -238,7 +226,7 @@ hr{
    75%  {transform: scale(1);}
 }
 
-@media (max-width: 415px){
+@media (max-width: 300px){
    
    #board{
       margin-top: 8px;
@@ -261,6 +249,12 @@ hr{
 
 }
 
-.tile img{
-   background: none;
+
+.tile-added{
+   background-image: none;
+   color: #f9f6f2;
+}
+
+.x2, .x4{
+   color: #776e65;
 }
