@@ -121,12 +121,21 @@ function slide(row){
 function slideLeft(){
    for(let r = 0; r < rows; r++){
       let row = board[r];
+      let originalRow = row.slice();
+
       row = slide(row);
       board[r] = row;
       for(let c = 0; c < columns; c++){
          let tile = document.getElementById(r.toString() + '-' + c.toString());
          let num = board[r][c];
          updateTile(tile, num);
+         
+         if (originalRow[c] !== num && num !== 0) { 
+            tile.style.animation = "slide-from-right 0.3s";
+            setTimeout(() => {
+               tile.style.animation = "";
+            }, 300);
+         }
       }
    }
 }
@@ -134,6 +143,8 @@ function slideLeft(){
 function slideRight(){
    for(let r = 0; r < rows; r++){
       let row = board[r];
+      let originalRow = row.slice();
+
       row.reverse();
       row = slide(row);
       row.reverse();
@@ -142,6 +153,13 @@ function slideRight(){
          let tile = document.getElementById(r.toString() + '-' + c.toString());
          let num = board[r][c];
          updateTile(tile, num);
+
+         if (originalRow[c] !== num && num !== 0) { 
+            tile.style.animation = "slide-from-left 0.3s";
+            setTimeout(() => {
+               tile.style.animation = "";
+            }, 300);
+         }
       }
    }
 }
@@ -155,14 +173,29 @@ function slideUp(){
          board[2][c], 
          board[3][c] 
       ];
+      let originalRow = row.slice();
 
       row = slide(row);
+
+      let changedIndices = [];
+      for (let r = 0; r < rows; r++) { 
+         if (originalRow[r] !== row[r]) {
+            changedIndices.push(r);
+         }
+      }
 
       for(let r = 0; r < rows; r++){
          board[r][c] = row[r];
          let tile = document.getElementById(r.toString() + '-' + c.toString());
          let num = board[r][c];
          updateTile(tile, num);
+
+         if (changedIndices.includes(r) && num !== 0) {
+            tile.style.animation = "slide-from-down 0.3s";
+            setTimeout(() => {
+               tile.style.animation = "";
+            }, 300);
+         }  
       }
    }
 }
@@ -176,15 +209,31 @@ function slideDown(){
          board[2][c], 
          board[3][c] 
       ];
+      let originalRow = row.slice();
+
       row.reverse()
       row = slide(row);
-      row.reverse()
+      row.reverse();
+
+      let changedIndices = [];
+      for (let r = 0; r < rows; r++) { 
+         if (originalRow[r] !== row[r]) {
+            changedIndices.push(r);
+         }
+      }
 
       for(let r = 0; r < rows; r++){
          board[r][c] = row[r];
          let tile = document.getElementById(r.toString() + '-' + c.toString());
          let num = board[r][c];
          updateTile(tile, num);
+
+         if (changedIndices.includes(r) && num !== 0) {
+            tile.style.animation = "slide-from-up 0.3s";
+            setTimeout(() => {
+               tile.style.animation = "";
+            }, 300);
+         }  
       }
    }
 }
